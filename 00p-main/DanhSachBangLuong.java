@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.BufferedReader;
+import java.io.File;
 
 public class DanhSachBangLuong implements DanhSach{
     public Scanner sc = new Scanner(System.in);
@@ -66,7 +67,8 @@ public class DanhSachBangLuong implements DanhSach{
 //ghi file
     public void ghiFile(){
         try {
-            FileWriter fw = new FileWriter("dataBL.txt");
+        	File file = new File("dataBL.txt");
+            FileWriter fw = new FileWriter(file);
             //ghi
             String s;
             for(BangLuong l: dsbl){
@@ -88,7 +90,7 @@ public class DanhSachBangLuong implements DanhSach{
                 fw.write(s);
             }
             fw.close();
-            System.out.println("Da ghi du lieu vao file theo duong dan: "+fw);
+            System.out.println("Da ghi du lieu cua danh sach bang luong vao file theo duong dan: "+file.getAbsolutePath());
             } catch (Exception e) {
                 System.out.println(e);
             }

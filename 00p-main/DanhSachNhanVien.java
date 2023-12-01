@@ -28,39 +28,40 @@ public class DanhSachNhanVien implements DanhSach{
 	//Menu của class
 	public void menu(DanhSachPhongBan danhSachPhongBan, DanhSachBangLuong danhSachBangLuong,DanhSachDuAn danhSachDuAn) {
 		int luaChon;
-		System.out.println("=====================================================");
-		System.out.println("|1. Xuat danh sach nhan vien");
-		System.out.println("|2. Them mot nhan vien vao danh sach");
-		System.out.println("|3. Tim kiem nhan vien trong danh sach");
-		System.out.println("|4. Xoa nhan vien trong danh sach");
-		System.out.println("|5. Sua thong tin nhan vien trong danh sach");
-		System.out.println("|0. Thoat");
-		System.out.println("=====================================================");
 		do {
-			System.out.print("Nhap lua chon (0 -> 5): ");
-			luaChon = Integer.parseInt(scan.nextLine());
-		} while(luaChon < 0 || luaChon > 5);
-		switch(luaChon) {
-			case 1: 
-				xuat(); 
-				break;
-			case 2: 
-				them(); 
-				break;
-			case 3:
-				tim();
-				break;
-			case 4:
-				xoa(danhSachPhongBan, danhSachBangLuong, danhSachDuAn);
-				break;
-			case 5:
-				sua(danhSachPhongBan, danhSachBangLuong, danhSachDuAn);
-				break;
-			case 0:
-				System.out.println("Thoat danh sach nhan vien thanh cong");
-				return;
-		}
-		
+			System.out.println("=====================================================");
+			System.out.println("|1. Xuat danh sach nhan vien");
+			System.out.println("|2. Them mot nhan vien vao danh sach");
+			System.out.println("|3. Tim kiem nhan vien trong danh sach");
+			System.out.println("|4. Xoa nhan vien trong danh sach");
+			System.out.println("|5. Sua thong tin nhan vien trong danh sach");
+			System.out.println("|0. Thoat");
+			System.out.println("=====================================================");
+			do {
+				System.out.print("Nhap lua chon (0 -> 5): ");
+				luaChon = Integer.parseInt(scan.nextLine());
+			} while(luaChon < 0 || luaChon > 5);
+			switch(luaChon) {
+				case 1: 
+					xuat(); 
+					break;
+				case 2: 
+					them(); 
+					break;
+				case 3:
+					tim();
+					break;
+				case 4:
+					xoa(danhSachPhongBan, danhSachBangLuong, danhSachDuAn);
+					break;
+				case 5:
+					sua(danhSachPhongBan, danhSachBangLuong, danhSachDuAn);
+					break;
+				case 0:
+					System.out.println("Thoat danh sach nhan vien thanh cong");
+					return;
+			}
+		} while(true);
 	}
 	
 	//Phương thức xuất
@@ -95,7 +96,7 @@ public class DanhSachNhanVien implements DanhSach{
 			System.out.println("Khong co nhan vien nao trong danh sach!!!");
 			return -1;
 		}
-		int luaChon = -1;
+		int luaChon;
 		System.out.println("=====================================================");
 		System.out.println("|1. Tim theo ma so nhan vien.");
 		System.out.println("|2. Tim theo ten nhan vien.");
@@ -105,7 +106,7 @@ public class DanhSachNhanVien implements DanhSach{
 		System.out.println("|0. Huy tim kiem.");
 		System.out.println("=====================================================");
 		do {
-			System.out.println("Nhap lua chon (0 -> 4): ");
+			System.out.print("Nhap lua chon (0 -> 4): ");
 			luaChon = Integer.parseInt(scan.nextLine());
 		} while (luaChon < 0 || luaChon > 4);
 		return luaChon;
@@ -138,11 +139,16 @@ public class DanhSachNhanVien implements DanhSach{
 	private ArrayList<NhanVien> timTen() {
 		String tenCanTim;
 		ArrayList<NhanVien> danhSachNhanVienCungTen = new ArrayList<NhanVien>();
-		System.out.println("Nhap ten nhan vien can tim: ");
+		System.out.print("Nhap ten nhan vien can tim: ");
 		tenCanTim = scan.nextLine();
+		while(NhanVien.hoHoacTenKhongHopLe(tenCanTim)) {
+			System.out.println("Ten khong hop le!! (Khong duoc de trong hoac co chua chu so)");
+			System.out.print("Nhap ten nhan vien can tim: ");
+			tenCanTim = scan.nextLine();
+		}
 		for(NhanVien i: danhSachNhanVien) {
 			String ten = i.getTen();
-			if (ten == tenCanTim.intern()) {
+			if (ten.intern() == tenCanTim.intern()) {
 				danhSachNhanVienCungTen.add(i);
 			}
 		}
@@ -174,7 +180,7 @@ public class DanhSachNhanVien implements DanhSach{
 	private ArrayList<NhanVien> timLoaiNhanVien() {
 		int luaChon;
 		do {
-			System.out.print("Nhap loai nhan vien can tim (1.Nhan vien chinh thuc   2. Nhan vien Chinh thuc): ");
+			System.out.print("Nhap loai nhan vien can tim (1.Nhan vien chinh thuc   2. Nhan vien thoi vu): ");
 			luaChon = Integer.parseInt(scan.nextLine());
 		} while(luaChon < 1 || luaChon > 2);
 		switch(luaChon) {
@@ -240,11 +246,14 @@ public class DanhSachNhanVien implements DanhSach{
 	public void xoa(DanhSachPhongBan danhSachPhongBan, DanhSachBangLuong danhSachBangLuong,DanhSachDuAn danhSachDuAn) {
 		ArrayList<NhanVien> danhSachNhanVienCanXoa = danhSachCanTim();
 		if (danhSachNhanVienCanXoa == null) {
+			System.out.println("=====================================================");
 			System.out.println("Khong co nhan vien nao trong danh sach can tim...");
+			System.out.println("=====================================================");
 			return;
 		}
-		int luaChon, stt, count = 1;
 		while (danhSachNhanVienCanXoa.size() > 0) {
+			int luaChon, stt, count = 1;
+			System.out.println("=====================================================");
 			System.out.println("Danh sach cac nhan vien can xoa: ");
 			System.out.println("=====================================================");
 			for(NhanVien i: danhSachNhanVienCanXoa) {
@@ -253,40 +262,27 @@ public class DanhSachNhanVien implements DanhSach{
 			}
 			System.out.println("1. Xoa 1 nhan vien trong danh sach");
 			System.out.println("0. Thoat");
+			System.out.println("=====================================================");
 			do {
 				System.out.print("Nhap lua chon (0 -> 1): ");
 				luaChon = Integer.parseInt(scan.nextLine());
 			} while(luaChon < 0 || luaChon > 1);
-		//Danh sách các đối tượng phụ cần tạo
-			
-			NhanVien nhanVienCanXoa = new NhanVien(); //Tạo đối tượng tạm nhân viên cần xóa
-			//Lấy danh sách phòng ban
-			ArrayList<PhongBan> dspb = danhSachPhongBan.getDanhSachPhongBan();
-			ArrayList<NhanVien> tempDSNV; //mảng danh sách nhân viên tạm
-			//Lấy danh sách bảng lương
-			ArrayList<BangLuong> dsbl = danhSachBangLuong.getDanhSachBangLuong();
-			//Tạo 2 đối tượng bảng lương cần
-			BangLuongChinhThuc blctCanXoa = null;
-			BangLuongThoiVu bltvCanXoa = null;
-			//Lấy danh sách dự án
-			ArrayList<DuAn> dsda = danhSachDuAn.getDanhSachDuAn();
-			DuAnCaNhan dacnCanXoa = new DuAnCaNhan(); //Tạo đối tượng dự án cần reset nhân viên
-			
+			System.out.println("=====================================================");
 			if (luaChon == 1) {
 				do {
-					System.out.println("Nhap STT nhan vien can xoa: ");
+					System.out.print("Nhap STT nhan vien can xoa (1 -> "+danhSachNhanVienCanXoa.size()+"): ");
 					stt = Integer.parseInt(scan.nextLine());
-				} while(stt < 0 || stt > danhSachNhanVienCanXoa.size());
-			//Lấy id nhân viên cần xóa để so sánh
-				int idNhanVienCanXoa = (danhSachNhanVienCanXoa.get(stt-1)).getID();
+				} while(stt < 1 || stt > danhSachNhanVienCanXoa.size());
+			System.out.println("=====================================================");
+			NhanVien nhanVienDuocChon = danhSachNhanVienCanXoa.get(stt-1);
 			//Xóa nhân viên trong danh sách nhân viên
-				danhSachNhanVien.remove(danhSachNhanVienCanXoa.get(stt-1));
+				danhSachNhanVien.remove(nhanVienDuocChon);
 			//Xóa nhân viên trong danh sách phòng ban:
-				danhSachPhongBan.xoaNhanVien(danhSachNhanVienCanXoa.get(stt-1));
+				danhSachPhongBan.xoaNhanVien(nhanVienDuocChon);
 			//Xóa bảng lương của nhân viên	
-				danhSachBangLuong.xoaNhanVien(danhSachNhanVienCanXoa.get(stt-1));
+				danhSachBangLuong.xoaNhanVien(nhanVienDuocChon);
 			//Xóa dự án cá nhân
-				danhSachDuAn.xoaNhanVien(danhSachNhanVienCanXoa.get(stt-1));
+				danhSachDuAn.xoaNhanVien(nhanVienDuocChon);
 			/*	
 			//Reset Dự án cá nhân
 				//	+Duyệt tìm từng dự án cá nhân trong danh sách dự án
@@ -302,10 +298,10 @@ public class DanhSachNhanVien implements DanhSach{
 				dacnCanXoa.setNhanVien(newNV); //Reset dự án cá nhân
 				*/
 				
-				
 				//Loại bỏ nhân viên được xóa ra khỏi danh sách nhân viên cần xóa
 				danhSachNhanVienCanXoa.remove(stt-1);
 				System.out.println("Da xoa nhan vien!!");
+				System.out.println("=====================================================");
 			} 
 			if (luaChon == 0) return;
 		}
@@ -323,65 +319,98 @@ public class DanhSachNhanVien implements DanhSach{
 	public void sua(DanhSachPhongBan danhSachPhongBan, DanhSachBangLuong danhSachBangLuong, DanhSachDuAn danhSachDuAn) {
 		ArrayList<NhanVien> danhSachNhanVienCanSua = danhSachCanTim();
 		if (danhSachNhanVienCanSua == null) {
+			System.out.println("=====================================================");
 			System.out.println("Khong co nhan vien nao trong danh sach can tim...");
+			System.out.println("=====================================================");
 			return;
 		}
 		while(danhSachNhanVienCanSua.size() > 0) {
 			int stt, luaChon, count = 1 ;
+			
+		//Xuất danh sách nhân viên cần sửa
+			System.out.println("=====================================================");
 			System.out.println("Danh sach nhan vien can sua: ");
 			System.out.println("=====================================================");
 			for(NhanVien i: danhSachNhanVienCanSua) {
 				System.out.println(count+". ");i.xuat();
 				count++;
 			}
+			
+		//Nhập lựa chọn (Sửa hoặc thoát)
 			System.out.println("1. Chon 1 nhan vien can sua");
 			System.out.println("0. Thoat");
 			do {
 				System.out.print("Nhap lua chon (0 -> 1): ");
 				luaChon = Integer.parseInt(scan.nextLine());
 			} while(luaChon < 0 || luaChon > 1);
+			System.out.println("=====================================================");
+			
+		//Thoát nếu lựa chọn = 0
 			if(luaChon == 0) {
 				return;
 			}
+			
+		//Sửa thông tin nhân viên
 			do {
-				System.out.print("Nhap STT nhan vien can sua: ");
+				System.out.print("Nhap STT nhan vien can sua(1 -> "+danhSachNhanVienCanSua.size()+
+						"): ");
 				stt = Integer.parseInt(scan.nextLine());
-			} while(stt < 0 || stt > danhSachNhanVienCanSua.size());
+			} while(stt < 1 || stt > danhSachNhanVienCanSua.size());
+			System.out.println("=====================================================");
+			
+			//Lấy index của nhân viên cần sửa có số thứ tự được chọn trong danh sách nhân viên
 			int index = danhSachNhanVien.indexOf(danhSachNhanVienCanSua.get(stt-1)); 
-			int idNhanVienCanSua = (danhSachNhanVien.get(index)).getID();
-			NhanVien nhanVienCanSua = new NhanVien();
+			NhanVien nhanVienDuocChon = danhSachNhanVien.get(index);
+			//Lấy id của nhân viên được chọn
+			int idNhanVienCanSua = nhanVienDuocChon.getID();
+			
+			//Xuất thông tin của nhân viên được chọn trước khi sửa
+			System.out.println("Thong tin cua nhan vien can sua: ");
+			System.out.println("=====================================================");
+			nhanVienDuocChon.xuat();
+			
+			//Xuất menu các thông tin cần sửa của nhân viên được chọn
 			System.out.println("=====================================================");
 			System.out.println("Chon thong tin can sua:");
 			System.out.println("1. Ho Ten");
 			System.out.println("2. Ngay sinh");
-			if(danhSachNhanVienCanSua.get(stt-1) instanceof NhanVienChinhThuc) {
+			if (nhanVienDuocChon instanceof NhanVienChinhThuc){
 				System.out.println("3. Tien bao hiem");
 			}
-			if(danhSachNhanVienCanSua.get(stt-1) instanceof NhanVienThoiVu) {
+			if (nhanVienDuocChon instanceof NhanVienThoiVu){
 				System.out.println("3. Thoi han lam viec");
 			}
 			System.out.println("=====================================================");
+			
+			//Nhập lựa chọn
 			do {
 				System.out.print("Nhap lua chon (1 -> 3): ");
 				luaChon = Integer.parseInt(scan.nextLine());
 			} while(luaChon < 1 || luaChon > 3);
-		//Danh sách các biến phụ cần tạo
+			System.out.println("=====================================================");
+			//Danh sách các biến phụ cần tạo
 			ArrayList<PhongBan> dspb = danhSachPhongBan.getDanhSachPhongBan();
 			ArrayList<NhanVien> tempDSNV;
-			//Lấy danh sách bảng lương
+			NhanVien nhanVienCanSua = new NhanVien();
+				//Lấy danh sách bảng lương
 			ArrayList<BangLuong> dsbl = danhSachBangLuong.getDanhSachBangLuong();
-			//Tạo 2 đối tượng bảng lương cần
+				//Tạo 2 đối tượng bảng lương cần
 			BangLuongChinhThuc blctCanSua = null;
 			BangLuongThoiVu bltvCanSua = null;
-			//Lấy danh sách dự án
+				//Lấy danh sách dự án
 			ArrayList<DuAn> dsda = danhSachDuAn.getDanhSachDuAn();
 			DuAnCaNhan dacnCanSua = new DuAnCaNhan();
 			switch(luaChon) {
 				case 1:
 					System.out.print("Nhap ho ten moi: ");
 					String newHoTen = scan.nextLine();
+					while(NhanVien.hoHoacTenKhongHopLe(newHoTen)) {
+						System.out.println("Ho ten khong hop le!! (Khong duoc de trong hoac co chua chu so)");
+						System.out.print("Nhap ho ten moi: ");
+						newHoTen = scan.nextLine();
+					}
 				//Sửa họ tên nhân viên trong danh sách nhân viên
-					(danhSachNhanVien.get(index)).setHoTen(newHoTen);
+					nhanVienDuocChon.setHoTen(newHoTen);
 				//Sửa họ tên nhân viên trong danh sách phòng ban	
 					for(PhongBan i: dspb) {
 						tempDSNV = i.getDSNhanVien();
@@ -423,11 +452,14 @@ public class DanhSachNhanVien implements DanhSach{
 					break;
 				case 2:
 					String newNgaySinh;
+					System.out.print("Nhap ngay sinh moi(YYYY-MM-DD): ");
+					newNgaySinh = scan.nextLine();
 					do {
+						System.out.println("Ngay sinh khong hop le!! (Sai dinh dang hoac ngay sinh khong ton tai)");
 						System.out.print("Nhap ngay sinh moi(YYYY-MM-DD): ");
 						newNgaySinh = scan.nextLine();
 					} while(NhanVien.ngaySinhKhongHopLe(newNgaySinh));
-					(danhSachNhanVien.get(index)).setNgaySinh(newNgaySinh);
+					nhanVienDuocChon.setNgaySinh(newNgaySinh);
 					//Sửa họ tên nhân viên trong danh sách phòng ban	
 					for(PhongBan i: dspb) {
 						tempDSNV = i.getDSNhanVien();
@@ -471,19 +503,30 @@ public class DanhSachNhanVien implements DanhSach{
 					int newThoiHanLamViec = 0;
 					double newTienBaoHiem = 0;
 					if(danhSachNhanVien.get(index) instanceof NhanVienThoiVu) {
+						System.out.print("Nhap thoi han lam viec moi: ");
+						newThoiHanLamViec = Integer.parseInt(scan.nextLine());
 						do {
+							System.out.println("Thoi han lam viec khong hop le!! (Phai lon hon 0 va nho hon hoac bang "+
+									NhanVien_CONST.MAX_OF_THOIHANLAMVIEC+" thang)");
 							System.out.print("Nhap thoi han lam viec moi: ");
 							newThoiHanLamViec = Integer.parseInt(scan.nextLine());
 						} while(NhanVienThoiVu.thoiHanLamViecKhongHopLe(newThoiHanLamViec));
-						((NhanVienThoiVu)(danhSachNhanVien.get(index))).setThoiHanLamViec(newThoiHanLamViec);
+						//Sửa thời hạn làm việc của nhân viên cần sửa trong danh sách nhân viên
+						((NhanVienThoiVu)nhanVienDuocChon).setThoiHanLamViec(newThoiHanLamViec);
 					}
 					if(danhSachNhanVien.get(index) instanceof NhanVienChinhThuc) {
+						System.out.print("Nhap tien bao hiem moi: ");
+						newTienBaoHiem = Double.parseDouble(scan.nextLine());
 						do {
+							System.out.println("Tien bao hiem khong hop le!! (Phai lon hon 0)");
 							System.out.print("Nhap tien bao hiem moi: ");
 							newTienBaoHiem = Double.parseDouble(scan.nextLine());
 						} while(NhanVienChinhThuc.tienBaoHiemKhongHopLe(newTienBaoHiem));
-						((NhanVienChinhThuc)(danhSachNhanVien.get(index))).setTienBaoHiem(newTienBaoHiem);
+						//Sửa tiền bảo hiểm của nhân viên cần sửa trong danh sách nhân viên
+						((NhanVienChinhThuc)nhanVienDuocChon).setTienBaoHiem(newTienBaoHiem);
 					}
+					
+					//Sửa thời hạn làm việc || tiền bảo hiểm trong danh sách phòng ban
 					for(PhongBan i: dspb) {
 						tempDSNV = i.getDSNhanVien();
 						for(NhanVien n: tempDSNV) {
@@ -498,6 +541,8 @@ public class DanhSachNhanVien implements DanhSach{
 					if (nhanVienCanSua instanceof NhanVienChinhThuc) {
 						((NhanVienChinhThuc)nhanVienCanSua).setTienBaoHiem(newTienBaoHiem);
 					}
+					
+					//Sửa thời hạn làm việc || tiền bảo hiểm trong danh sách bảng lương
 					for(BangLuong i: dsbl) {
 						int temp = (i.getNhanVien()).getID();
 						if(temp == idNhanVienCanSua) {
@@ -515,6 +560,8 @@ public class DanhSachNhanVien implements DanhSach{
 					if(bltvCanSua != null) {
 						((NhanVienThoiVu)(bltvCanSua.getNhanVien())).setThoiHanLamViec(newThoiHanLamViec);
 					}
+					
+					//Sửa thời hạn làm việc || tiền bảo hiểm trong danh sách dự án
 					for(DuAn i: dsda) {
 						if(i instanceof DuAnCaNhan) {
 							NhanVien temp = ((DuAnCaNhan) i).getNhanVien();
@@ -604,8 +651,9 @@ public class DanhSachNhanVien implements DanhSach{
 				}
 				fw.write("\n");
 			}
+			System.out.println("Da ghi du lieu cua danh sach nhan vien vao file theo duong dan: "
+					+outputFile.getAbsolutePath());
 			fw.close();
-			System.out.println("Da ghi du lieu vao file theo duong dan: "+outputFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

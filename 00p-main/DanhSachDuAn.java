@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.BufferedReader;
+import java.io.File;
 
 public class DanhSachDuAn implements DanhSach{
 	public Scanner sc = new Scanner(System.in);
@@ -68,7 +69,8 @@ public void docFile() {
 //ghi file
 		public void ghiFile() {
 				try {
-					FileWriter f = new FileWriter("dataDA.txt");
+					File file = new File("dataDA.txt");
+					FileWriter f = new FileWriter(file);
 					String s = new String();
 					for(DuAn da : ds) {
 						if(da instanceof DuAnCaNhan) {   
@@ -97,7 +99,7 @@ public void docFile() {
 					}
 					f.close();
 					//note
-					System.out.println("Da ghi du lieu vao file theo duong dan: "+f);
+					System.out.println("Da ghi du lieu cua danh sach do an vao file theo duong dan: "+file.getAbsolutePath());
 				}catch (Exception e) {
 					System.out.println(e);
 				}

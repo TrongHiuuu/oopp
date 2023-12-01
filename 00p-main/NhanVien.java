@@ -72,6 +72,21 @@ public class NhanVien {
 		count = newCount + 1;
 	}
 	//Các hàm kiểm tra điều kiện
+		//*** Kiểm tra điều kiện của tên
+	public static boolean chuoiCoChuaSo(String str) {
+		for(char i: str.toCharArray()) {
+			if(i >= '0' && i<= '9') {
+				return true;
+			}
+		}
+		return false;
+	}
+	public static boolean hoHoacTenKhongHopLe(String hoHoacTen) {
+		if(hoHoacTen.intern() == "" || chuoiCoChuaSo(hoHoacTen.intern())) {
+			return true;
+		}
+		return false;
+	}
 	
 		//*** Kiểm tra điều kiện của ngày sinh ***
 	public static boolean ngaySinhKhongHopLe(String newNgaySinh) {
@@ -114,12 +129,10 @@ public class NhanVien {
 		//*** Constructor có tham số ***
 	public NhanVien(int newID, String newHo, String newTen, String newNgaySinh, int newMaPhongBan) {
 		id = newID;
-		//if(idKhongHopLe(id)) id = 0;
 		ho = newHo;
 		ten = newTen;
 		setNgaySinh(newNgaySinh);
 		maPhongBan = newMaPhongBan;
-		//if(maPhongBanKhongHopLe(maPhongBan)) maPhongBan = 0;
 	}
 	
 	
@@ -132,17 +145,22 @@ public class NhanVien {
 		String newHoTen;
 		System.out.print("Nhap ho va ten: ");
 		newHoTen = scan.nextLine();
+		while(hoHoacTenKhongHopLe(newHoTen.intern())) {
+			System.out.println("Ho ten khong hop le!! (Khong duoc de trong hoac co chua chu so)");
+			System.out.print("Nhap ho va ten: ");
+			newHoTen = scan.nextLine();
+		}
 		setHoTen(newHoTen);
 	}
 	public void nhapNgaySinh() {
 		String newNgaySinh;
 		System.out.print("Nhap ngay sinh (YYYY-MM-DD): ");
 		newNgaySinh = scan.nextLine();
-		do {
-			System.out.println("Ngay sinh khong hop le, vui long nhap lai!!!");
+		while(ngaySinhKhongHopLe(newNgaySinh)) {
+			System.out.println("Ngay sinh khong hop le!! (Sai dinh dang hoac ngay sinh khong ton tai)");
 			System.out.print("Nhap ngay sinh (YYYY-MM-DD): ");
 			newNgaySinh = scan.nextLine();
-		} while(ngaySinhKhongHopLe(newNgaySinh));
+		};
 		setNgaySinh(newNgaySinh);
 	}
 	
