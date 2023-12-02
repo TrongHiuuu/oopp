@@ -70,6 +70,6 @@ public class NhanVienThoiVu extends NhanVien {
 	@Override public void xuat() {
 		super.xuat();
 		xuatThoiHanLamViec();
-		System.out.println("=====================================================");
+		
 	}
 }

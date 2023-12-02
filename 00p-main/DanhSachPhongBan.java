@@ -456,7 +456,6 @@ public class DanhSachPhongBan implements DanhSach {
             }
             bw.close();
             fw.close(); 
-            System.out.println("Da ghi du lieu cua danh sach phong ban vao file theo duong dan: "+f.getAbsolutePath());
         } catch(Exception e) {
         }
     }

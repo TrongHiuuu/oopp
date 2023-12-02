@@ -454,11 +454,11 @@ public class DanhSachNhanVien implements DanhSach{
 					String newNgaySinh;
 					System.out.print("Nhap ngay sinh moi(YYYY-MM-DD): ");
 					newNgaySinh = scan.nextLine();
-					do {
+					while(NhanVien.ngaySinhKhongHopLe(newNgaySinh)) {
 						System.out.println("Ngay sinh khong hop le!! (Sai dinh dang hoac ngay sinh khong ton tai)");
 						System.out.print("Nhap ngay sinh moi(YYYY-MM-DD): ");
 						newNgaySinh = scan.nextLine();
-					} while(NhanVien.ngaySinhKhongHopLe(newNgaySinh));
+					} 
 					nhanVienDuocChon.setNgaySinh(newNgaySinh);
 					//Sửa họ tên nhân viên trong danh sách phòng ban	
 					for(PhongBan i: dspb) {
